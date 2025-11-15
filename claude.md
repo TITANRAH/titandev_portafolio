@@ -18,25 +18,29 @@ Claude debe leer ese archivo para entender:
 ## 🎯 Especificaciones de ESTE Proyecto
 
 ### WordPress Backend
-- **URL WordPress**: [Completar - ej: https://cliente.siteground.com]
-- **API URL**: [Completar - ej: https://cliente.siteground.com/wp-json/wp/v2]
-- **Dominio para imágenes**: [Completar - ej: cliente.siteground.com]
+- **URL WordPress**: http://titandevback.local/
+- **API URL**: http://titandevback.local//wp-json/wp/v2
+- **Dominio para imágenes**: titandevback.local
 
 ### Frontend (Astro + Vercel)
-- **URL Producción**: [Completar - ej: https://cliente.vercel.app]
-- **Dominio personalizado**: [Completar si aplica]
+- **URL Producción**: [Por configurar en Vercel]
+- **Dominio personalizado**: [Por configurar]
+- **Estilo Visual**: Tech Minimal (minimalista-futurista)
 
 ### Post Types Personalizados
-Listar los custom post types específicos de este proyecto:
-- [ ] `posts` (por defecto)
-- [ ] `pages` (por defecto)
-- [ ] Agregar aquí tus CPTs (ej: `albums`, `events`, `products`)
+- [x] `posts` (Blog del Liderazgo)
+- [x] `pages` (Home, etc.)
+- [x] `projects` (Trabajos/Portfolio)
+- [x] `experience` (Experiencia Laboral)
+- [x] `studies` (Estudios)
+- [x] `courses` (Cursos y Certificaciones)
+- [x] `testimonials` (Recomendaciones)
+- [x] `technologies` (Stack Técnico)
 
 ### Taxonomías Personalizadas
-Listar las taxonomías específicas:
-- [ ] `categories` (por defecto)
-- [ ] `tags` (por defecto)
-- [ ] Agregar aquí tus taxonomías (ej: `product_categories`, `music_genres`)
+- [ ] `categories` (por defecto para posts)
+- [ ] `tags` (por defecto para posts)
+- [ ] `tech_categories` (Frontend, Backend, Database, DevOps, etc.)
 
 ### Campos ACF Especiales
 Documentar campos ACF que requieren procesamiento en `functions.php`:

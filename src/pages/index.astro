@@ -1,16 +1,173 @@
 ---
+import Layout from "../layouts/Layout.astro";
+import { HomePageSchema } from "../types";
+import { CACHE_CONFIG } from "../constants";
 
+// Configurar caché corto para actualizaciones rápidas
+Astro.response.headers.set("Cache-Control", CACHE_CONFIG.short);
+
+// Fetch data from WordPress
+const url = `${import.meta.env.API_URL}/pages?slug=inicio`;
+const response = await fetch(url);
+const json = await response.json();
+
+const parsedData = HomePageSchema.parse(json[0]);
+
+const title = parsedData.title.rendered;
+
+let subtitle = "Desarrollador Full-Stack";
+if (
+  parsedData.acf &&
+  !Array.isArray(parsedData.acf) &&
+  parsedData.acf.title
+) {
+  subtitle = parsedData.acf.title;
+}
+
+let description = "";
+if (
+  parsedData.acf &&
+  !Array.isArray(parsedData.acf) &&
+  parsedData.acf.description
+) {
+  description = parsedData.acf.description;
+}
+
+let heroImage = "";
+if (
+  parsedData.acf &&
+  !Array.isArray(parsedData.acf) &&
+  parsedData.acf.image &&
+  typeof parsedData.acf.image === "object" &&
+  "full" in parsedData.acf.image
+) {
+  heroImage = parsedData.acf.image.full.url;
+}
+
+if (
+  !heroImage &&
+  parsedData.featured_images &&
+  typeof parsedData.featured_images === "object" &&
+  "full" in parsedData.featured_images
+) {
+  heroImage = parsedData.featured_images.full.url;
+}
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title={title}>
+  <!-- Hero Section -->
+  <section
+    id="home"
+    class="relative min-h-screen flex items-center justify-center overflow-hidden"
+  >
+    <!-- Gradient Background -->
+    <div class="absolute inset-0 bg-gradient-to-br from-[#0a0a0a] via-[#1a1a1a] to-[#0a0a0a]"></div>
+
+    <!-- Animated Grid Background -->
+    <div class="absolute inset-0 opacity-20">
+      <div class="absolute inset-0" style="background-image: linear-gradient(rgba(0, 212, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 212, 255, 0.1) 1px, transparent 1px); background-size: 50px 50px;"></div>
+    </div>
+
+    <!-- Content -->
+    <div class="relative z-10 container mx-auto px-6 text-center">
+      <div data-aos="fade-up">
+        <h1 class="text-6xl md:text-8xl font-black mb-6 bg-gradient-to-r from-[#00d4ff] via-[#00ff88] to-[#8b5cf6] bg-clip-text text-transparent">
+          {title}
+        </h1>
+        <p class="text-2xl md:text-3xl text-[#f8f8f8] mb-4 font-semibold">
+          {subtitle}
+        </p>
+        {description && (
+          <p class="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-12">
+            {description}
+          </p>
+        )}
+      </div>
+
+      <div data-aos="fade-up" data-aos-delay="200" class="flex gap-6 justify-center flex-wrap">
+        <a
+          href="#trabajos"
+          class="px-8 py-4 bg-gradient-to-r from-[#00d4ff] to-[#00ff88] text-black font-bold rounded-lg hover:scale-105 transition-transform duration-300 glow"
+        >
+          Ver Proyectos
+        </a>
+        <a
+          href="#contacto"
+          class="px-8 py-4 border-2 border-[#00d4ff] text-[#00d4ff] font-bold rounded-lg hover:bg-[#00d4ff] hover:text-black transition-all duration-300"
+        >
+          Contactar
+        </a>
+      </div>
+
+      <!-- Scroll Indicator -->
+      <div data-aos="fade-up" data-aos-delay="400" class="mt-20">
+        <div class="inline-block animate-bounce">
+          <svg class="w-6 h-6 text-[#00d4ff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Decorative Elements -->
+    <div class="absolute top-20 left-10 w-20 h-20 border-4 border-[#00d4ff] opacity-30 rotate-45"></div>
+    <div class="absolute bottom-20 right-10 w-32 h-32 border-4 border-[#8b5cf6] opacity-20"></div>
+  </section>
+
+  <!-- Sections Placeholder -->
+  <section id="estudios" class="min-h-screen flex items-center justify-center bg-[#1a1a1a]">
+    <div class="container mx-auto px-6 text-center" data-aos="fade-up">
+      <h2 class="text-5xl font-black mb-6 text-[#00ff88]">Estudios</h2>
+      <p class="text-gray-400">Sección en construcción...</p>
+    </div>
+  </section>
+
+  <section id="trabajos" class="min-h-screen flex items-center justify-center">
+    <div class="container mx-auto px-6 text-center" data-aos="fade-up">
+      <h2 class="text-5xl font-black mb-6 text-[#00d4ff]">Trabajos</h2>
+      <p class="text-gray-400">Sección en construcción...</p>
+    </div>
+  </section>
+
+  <section id="experiencia" class="min-h-screen flex items-center justify-center bg-[#1a1a1a]">
+    <div class="container mx-auto px-6 text-center" data-aos="fade-up">
+      <h2 class="text-5xl font-black mb-6 text-[#8b5cf6]">Experiencia Laboral</h2>
+      <p class="text-gray-400">Sección en construcción...</p>
+    </div>
+  </section>
+
+  <section id="cursos" class="min-h-screen flex items-center justify-center">
+    <div class="container mx-auto px-6 text-center" data-aos="fade-up">
+      <h2 class="text-5xl font-black mb-6 text-[#00ff88]">Cursos</h2>
+      <p class="text-gray-400">Sección en construcción...</p>
+    </div>
+  </section>
+
+  <section id="recomendaciones" class="min-h-screen flex items-center justify-center bg-[#1a1a1a]">
+    <div class="container mx-auto px-6 text-center" data-aos="fade-up">
+      <h2 class="text-5xl font-black mb-6 text-[#00d4ff]">Recomendaciones</h2>
+      <p class="text-gray-400">Sección en construcción...</p>
+    </div>
+  </section>
+
+  <section id="tecnologias" class="min-h-screen flex items-center justify-center">
+    <div class="container mx-auto px-6 text-center" data-aos="fade-up">
+      <h2 class="text-5xl font-black mb-6 text-[#8b5cf6]">Tecnologías</h2>
+      <p class="text-gray-400">Sección en construcción...</p>
+    </div>
+  </section>
+
+  <section id="blog" class="min-h-screen flex items-center justify-center bg-[#1a1a1a]">
+    <div class="container mx-auto px-6 text-center" data-aos="fade-up">
+      <h2 class="text-5xl font-black mb-6 text-[#00ff88]">Blog del Liderazgo</h2>
+      <p class="text-gray-400">Sección en construcción...</p>
+    </div>
+  </section>
+
+  <section id="contacto" class="min-h-screen flex items-center justify-center">
+    <div class="container mx-auto px-6 text-center" data-aos="fade-up">
+      <h2 class="text-5xl font-black mb-6 text-[#00d4ff]">Contacto</h2>
+      <p class="text-gray-400">Formulario en construcción...</p>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,62 @@
+---
+import "../app.css";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Portfolio de desarrollo web full-stack" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- AOS CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <title>{title}</title>
+  </head>
+  <body class="bg-[#0a0a0a] text-[#f8f8f8]">
+    <slot />
+
+    <!-- AOS JavaScript -->
+    <script is:inline src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script is:inline>
+      function initAOS() {
+        AOS.init({
+          duration: 800,
+          once: false,
+          offset: 100,
+          easing: "ease-in-out",
+          disable: false,
+        });
+      }
+
+      initAOS();
+
+      document.addEventListener("astro:after-swap", () => {
+        AOS.refresh();
+        initAOS();
+      });
+
+      document.addEventListener("astro:page-load", () => {
+        AOS.refresh();
+      });
+    </script>
+  </body>
+</html>
