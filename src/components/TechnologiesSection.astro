@@ -1,0 +1,203 @@
+---
+import SectionTitle from "./SectionTitle.astro";
+import { TECHNOLOGIES, SKILL_LEVELS } from "../constants";
+
+const categoryNames: Record<string, string> = {
+  frontend: "Frontend",
+  backend: "Backend",
+  mobile: "Mobile",
+  database: "Databases",
+  tools: "Dev Tools",
+  ai: "AI Tools",
+  cloud: "Cloud",
+  leadership: "Liderazgo & Soft Skills",
+};
+
+const categoryIcons: Record<string, string> = {
+  frontend: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>`,
+  backend: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"></path></svg>`,
+  mobile: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>`,
+  database: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path></svg>`,
+  tools: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>`,
+  ai: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>`,
+  cloud: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path></svg>`,
+  leadership: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>`,
+};
+
+function getStylesForColor(color: string) {
+  const styleMap: Record<string, any> = {
+    'tech-cyan': {
+      badgeClasses: 'bg-tech-cyan/10 text-tech-cyan border-tech-cyan',
+      glowClasses: 'bg-tech-cyan',
+      barClasses: 'bg-linear-to-r from-tech-cyan to-tech-purple shadow-lg shadow-tech-cyan/50',
+      dotClasses: 'bg-tech-cyan'
+    },
+    'tech-green': {
+      badgeClasses: 'bg-tech-green/10 text-tech-green border-tech-green',
+      glowClasses: 'bg-tech-green',
+      barClasses: 'bg-linear-to-r from-tech-green to-tech-cyan shadow-lg shadow-tech-green/50',
+      dotClasses: 'bg-tech-green'
+    },
+    'tech-purple': {
+      badgeClasses: 'bg-tech-purple/10 text-tech-purple border-tech-purple',
+      glowClasses: 'bg-tech-purple',
+      barClasses: 'bg-linear-to-r from-tech-purple to-tech-cyan shadow-lg shadow-tech-purple/50',
+      dotClasses: 'bg-tech-purple'
+    },
+    'tech-gray': {
+      badgeClasses: 'bg-tech-gray/10 text-gray-400 border-tech-gray',
+      glowClasses: 'bg-gray-500',
+      barClasses: 'bg-linear-to-r from-gray-500 to-gray-400 shadow-lg shadow-gray-500/50',
+      dotClasses: 'bg-gray-400'
+    }
+  };
+  return styleMap[color] || styleMap['tech-gray'];
+}
+---
+
+<section id="stack-tecnico" class="min-h-screen flex items-center justify-center bg-tech-dark">
+  <div class="container mx-auto px-6 py-20" data-aos="fade-up">
+    <SectionTitle title="Stack Técnico" icon="code" color="tech-purple" />
+
+    <div class="max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {Object.entries(TECHNOLOGIES).map(([categoryKey, techs], categoryIndex) => (
+          <div
+            class="glass rounded-xl p-6 hover:scale-[1.02] transition-all duration-300 group"
+            data-aos="fade-up"
+            data-aos-delay={categoryIndex * 100}
+          >
+            <!-- Header de categoría -->
+            <div class="flex items-center gap-3 mb-6">
+              <div class="w-12 h-12 rounded-lg bg-linear-to-br from-tech-cyan to-tech-purple flex items-center justify-center text-tech-black group-hover:scale-110 transition-transform duration-300">
+                <Fragment set:html={categoryIcons[categoryKey]} />
+              </div>
+              <h3 class="text-2xl font-bold text-tech-white group-hover:text-tech-cyan transition-colors">
+                {categoryNames[categoryKey]}
+              </h3>
+            </div>
+
+            <!-- Lista de tecnologías -->
+            <div class="space-y-5">
+              {techs.map((tech: any, techIndex: number) => {
+                const skillLevel = SKILL_LEVELS[tech.level as keyof typeof SKILL_LEVELS];
+                const percentage = skillLevel.percentage;
+                const levelColor = skillLevel.color;
+                const styles = getStylesForColor(levelColor);
+
+                return (
+                  <div
+                    class="tech-item group/tech"
+                    data-aos="fade-right"
+                    data-aos-delay={categoryIndex * 100 + techIndex * 50}
+                  >
+                    <div class="flex items-center justify-between mb-2">
+                      <span class="text-tech-white font-semibold text-base group-hover/tech:text-tech-cyan transition-colors">
+                        {tech.name}
+                      </span>
+                      <span
+                        class={`px-3 py-1 text-xs font-bold rounded-full border-2 transition-all duration-300 group-hover/tech:shadow-lg ${styles.badgeClasses}`}
+                      >
+                        {percentage}%
+                      </span>
+                    </div>
+
+                    <div class="relative h-3 bg-tech-black/50 rounded-full overflow-hidden border border-tech-gray group-hover/tech:border-tech-cyan/50 transition-all duration-300">
+                      <div class={`absolute inset-0 opacity-20 blur-sm ${styles.glowClasses}`}></div>
+
+                      <div
+                        class={`skill-bar absolute inset-y-0 left-0 rounded-full transition-all duration-1000 ease-out ${styles.barClasses} group-hover/tech:shadow-xl`}
+                        style="width: 0%"
+                        data-percentage={percentage}
+                      >
+                      </div>
+
+                      <div
+                        class={`skill-end-point absolute top-1/2 -translate-y-1/2 w-2 h-2 rounded-full ${styles.dotClasses} shadow-lg opacity-0 transition-all duration-1000`}
+                        style="left: 0%"
+                        data-percentage={percentage}
+                      ></div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div class="mt-12 flex flex-wrap items-center justify-center gap-6" data-aos="fade-up" data-aos-delay="600">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-3 rounded-full bg-linear-to-r from-tech-cyan to-tech-purple shadow-lg shadow-tech-cyan/50"></div>
+          <span class="text-tech-white text-sm font-medium">Avanzado (90%)</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-3 rounded-full bg-linear-to-r from-tech-green to-tech-cyan shadow-lg shadow-tech-green/50"></div>
+          <span class="text-tech-white text-sm font-medium">Intermedio (60%)</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-3 rounded-full bg-linear-to-r from-tech-purple to-tech-cyan shadow-lg shadow-tech-purple/50"></div>
+          <span class="text-tech-white text-sm font-medium">Intermedio-Básico (30%)</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-3 rounded-full bg-linear-to-r from-gray-500 to-gray-400 shadow-lg shadow-gray-500/50"></div>
+          <span class="text-tech-white text-sm font-medium">Básico (15%)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  .animate-shimmer {
+    animation: shimmer 3s infinite;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const observerOptions = {
+      threshold: 0.2,
+      rootMargin: '0px 0px -100px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const section = entry.target as HTMLElement;
+          const skillBars = section.querySelectorAll('.skill-bar');
+          const endPoints = section.querySelectorAll('.skill-end-point');
+
+          skillBars.forEach((bar, index) => {
+            const percentage = bar.getAttribute('data-percentage');
+            if (percentage) {
+              setTimeout(() => {
+                (bar as HTMLElement).style.width = `${percentage}%`;
+                if (endPoints[index]) {
+                  (endPoints[index] as HTMLElement).style.left = `${percentage}%`;
+                  (endPoints[index] as HTMLElement).style.opacity = '1';
+                }
+              }, index * 100);
+            }
+          });
+
+          observer.unobserve(section);
+        }
+      });
+    }, observerOptions);
+
+    const section = document.getElementById('stack-tecnico');
+    if (section) {
+      observer.observe(section);
+    }
+  });
+</script>

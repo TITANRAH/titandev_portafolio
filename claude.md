@@ -28,7 +28,6 @@ Claude debe leer ese archivo para entender:
 - **Estilo Visual**: Tech Minimal (minimalista-futurista)
 
 ### Post Types Personalizados
-- [x] `posts` (Blog del Liderazgo)
 - [x] `pages` (Home, etc.)
 - [x] `projects` (Trabajos/Portfolio)
 - [x] `experience` (Experiencia Laboral)
@@ -38,8 +37,6 @@ Claude debe leer ese archivo para entender:
 - [x] `technologies` (Stack Técnico)
 
 ### Taxonomías Personalizadas
-- [ ] `categories` (por defecto para posts)
-- [ ] `tags` (por defecto para posts)
 - [ ] `tech_categories` (Frontend, Backend, Database, DevOps, etc.)
 
 ### Campos ACF Especiales

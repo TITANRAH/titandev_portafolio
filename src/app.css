@@ -15,10 +15,23 @@
 }
 
 /* Estilos base */
+html {
+  overflow-x: hidden;
+}
+
 body {
   background: var(--color-tech-black);
   color: var(--color-tech-white);
   font-family: var(--font-sans);
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 /* Glassmorphism cards */

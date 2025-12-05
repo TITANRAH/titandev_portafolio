@@ -1,0 +1,105 @@
+---
+import SectionTitle from "./SectionTitle.astro";
+import { Picture } from "astro:assets";
+import type { ExperienceUI } from "../types";
+
+interface Props {
+  experiences?: ExperienceUI[];
+}
+
+const { experiences = [] } = Astro.props;
+
+const displayExperiences = experiences.length > 0 ? experiences : [];
+---
+
+<section id="experiencia" class="min-h-screen flex items-center justify-center bg-tech-dark relative overflow-hidden">
+  <div class="absolute inset-0 opacity-10">
+    <div class="absolute inset-0" style="background-image: linear-gradient(rgba(139, 92, 246, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(139, 92, 246, 0.1) 1px, transparent 1px); background-size: 50px 50px;"></div>
+  </div>
+
+  <div class="container mx-auto px-6 py-20 relative z-10" data-aos="fade-up">
+    <SectionTitle title="Experiencia Laboral" icon="document" color="tech-purple" />
+
+    <div class="max-w-5xl mx-auto mt-16 relative">
+      <div class="hidden md:block absolute left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-tech-purple via-tech-cyan to-tech-purple transform -translate-x-1/2"></div>
+
+      <div class="space-y-12">
+        {displayExperiences.map((exp: ExperienceUI, index: number) => (
+          <div
+            class="relative"
+            data-aos={index % 2 === 0 ? "fade-right" : "fade-left"}
+            data-aos-delay={index * 100}
+          >
+            <div class="hidden md:block absolute left-1/2 top-8 w-4 h-4 bg-tech-purple rounded-full border-4 border-tech-dark transform -translate-x-1/2 z-10 pulse-dot"></div>
+
+            <div class={`md:w-[calc(50%-2rem)] ${index % 2 === 0 ? 'md:mr-auto' : 'md:ml-auto'}`}>
+              <div class="glass rounded-lg overflow-hidden hover:scale-105 transition-all duration-300 group border border-tech-purple/20 hover:border-tech-purple/60">
+
+                <div class="flex flex-col md:flex-row items-center gap-6 p-6">
+                  {exp.image && (
+                    <div class="relative shrink-0">
+                      <div class="w-24 h-24 rounded-full bg-tech-black/50 border-2 border-tech-purple/40 flex items-center justify-center p-4 group-hover:border-tech-cyan transition-all duration-300 overflow-hidden">
+                        <Picture
+                          src={exp.image}
+                          alt={exp.company}
+                          width={96}
+                          height={96}
+                          formats={["avif", "webp"]}
+                          class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300"
+                          loading="lazy"
+                        />
+                      </div>
+                      <div class="absolute inset-0 rounded-full bg-tech-purple/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    </div>
+                  )}
+
+                  <div class="flex-1 text-center md:text-left">
+                    <h3 class="text-2xl font-bold text-tech-cyan mb-2 group-hover:text-tech-purple transition-colors">
+                      {exp.company}
+                    </h3>
+
+                    {exp.period && (
+                      <div class="inline-flex items-center gap-2 px-3 py-1 bg-tech-purple/20 rounded-full mb-3">
+                        <svg class="w-4 h-4 text-tech-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span class="text-sm font-semibold text-tech-green">{exp.period}</span>
+                      </div>
+                    )}
+
+                    {exp.description && (
+                      <p class="text-gray-400 text-sm leading-relaxed">
+                        {exp.description}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                <div class="h-1 bg-gradient-to-r from-transparent via-tech-purple to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    {displayExperiences.length === 0 && (
+      <p class="text-gray-400 text-center mt-8">Cargando experiencias...</p>
+    )}
+  </div>
+</section>
+
+<style>
+  .pulse-dot {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.7);
+    }
+    50% {
+      box-shadow: 0 0 0 10px rgba(139, 92, 246, 0);
+    }
+  }
+</style>

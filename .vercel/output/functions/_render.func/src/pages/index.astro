@@ -4,16 +4,17 @@ import HeroSection from "../components/HeroSection.astro";
 import StudiesSection from "../components/StudiesSection.astro";
 import ExperienceSection from "../components/ExperienceSection.astro";
 import CertificatesSection from "../components/CertificatesSection.astro";
+import TestimonialsSection from "../components/TestimonialsSection.astro";
 import TechnologiesSection from "../components/TechnologiesSection.astro";
 import ContactSection from "../components/ContactSection.astro";
-import { HomePageSchema, type HomePage } from "../types";
+import { HomePageSchema } from "../types";
 import { CACHE_CONFIG } from "../constants";
 
 // Configurar caché corto para actualizaciones rápidas
 Astro.response.headers.set("Cache-Control", CACHE_CONFIG.short);
 
 // Fetch data from WordPress (con manejo de errores)
-let parsedData: HomePage | null = null;
+let parsedData = null;
 let title = "";
 
 try {
@@ -72,6 +73,7 @@ if (parsedData) {
     description = parsedData.acf.subtititle;
   }
 
+  // Intentar primero desde ACF image
   if (
     parsedData.acf &&
     !Array.isArray(parsedData.acf) &&
@@ -83,6 +85,8 @@ if (parsedData) {
     imageWidth = parsedData.acf.image.full.width;
     imageHeight = parsedData.acf.image.full.height;
   }
+
+  // Si no hay imagen en ACF, usar featured_images
   if (
     !imageUrl &&
     parsedData.featured_images &&
@@ -94,16 +98,17 @@ if (parsedData) {
     imageHeight = parsedData.featured_images.full.height;
   }
 
+  // Procesar estudios
   if (parsedData.acf && !Array.isArray(parsedData.acf)) {
     for (let i = 1; i <= 10; i++) {
       const studyKey = `study_${i}` as keyof typeof parsedData.acf;
-      const study = parsedData.acf[studyKey] as any;
+      const study = parsedData.acf[studyKey];
 
       if (study && typeof study === "object" && "career" in study && study.career) {
         const studyData: any = {
           id: i,
-          title: study.career as string,
-          institution: (study.institution as string) || "",
+          title: study.career,
+          institution: study.institution || "",
           period: study.date_from && study.date_until
             ? `${study.date_from} - ${study.date_until}`
             : "",
@@ -111,10 +116,12 @@ if (parsedData) {
           description: "",
         };
 
+        // Usar imagen de la institución para la card
         if (study.img_institution && typeof study.img_institution === "object" && "full" in study.img_institution) {
           studyData.image = study.img_institution.full.url;
         }
 
+        // Usar certificado como URL del botón "Ver Certificado"
         if (study.certificate && typeof study.certificate === "object" && "full" in study.certificate) {
           studyData.certificateUrl = study.certificate.full.url;
         }
@@ -124,19 +131,21 @@ if (parsedData) {
     }
   }
 
+  // Procesar experiencias desde campos ACF de la página (legacy - fallback)
   if (parsedData.acf && !Array.isArray(parsedData.acf)) {
     for (let i = 1; i <= 10; i++) {
       const expKey = `experience_${i}` as keyof typeof parsedData.acf;
-      const exp = parsedData.acf[expKey] as any;
+      const exp = parsedData.acf[expKey];
 
       if (exp && typeof exp === "object" && "title" in exp && exp.title) {
         const expData: any = {
           id: i,
-          company: exp.title as string,
-          description: (exp.description as string) || "",
-          period: (exp.experience_time as string) || "",
+          company: exp.title,
+          description: exp.description || "",
+          period: exp.experience_time || "",
         };
 
+        // Usar imagen de la empresa para la card
         if (exp.img && typeof exp.img === "object" && "full" in exp.img) {
           expData.image = exp.img.full.url;
         }
@@ -147,6 +156,7 @@ if (parsedData) {
   }
 }
 
+// Procesar experiencias desde CPT (dinámico - preferido)
 if (experiencesData && experiencesData.length > 0) {
   experiences = experiencesData.map((exp: any, index: number) => {
     const expData: any = {
@@ -156,9 +166,11 @@ if (experiencesData && experiencesData.length > 0) {
       period: exp.acf?.experience_time || "",
     };
 
+    // Usar imagen ACF si está disponible
     if (exp.acf?.img && typeof exp.acf.img === "object" && "full" in exp.acf.img) {
       expData.image = exp.acf.img.full.url;
     }
+    // Fallback a featured image
     else if (exp.featured_images && typeof exp.featured_images === "object" && "full" in exp.featured_images) {
       expData.image = exp.featured_images.full.url;
     }
@@ -166,17 +178,20 @@ if (experiencesData && experiencesData.length > 0) {
     return expData;
   });
 }
+
+// Procesar certificados desde ACF
 if (parsedData && parsedData.acf && !Array.isArray(parsedData.acf)) {
   for (let i = 1; i <= 20; i++) {
     const certKey = `certificate_${i}` as keyof typeof parsedData.acf;
-    const cert = parsedData.acf[certKey] as any;
+    const cert = parsedData.acf[certKey];
 
     if (cert && typeof cert === "object" && "name" in cert && cert.name) {
       const certData: any = {
         id: i,
-        name: cert.name as string,
+        name: cert.name,
       };
 
+      // Usar imagen del certificado
       if (cert.img && typeof cert.img === "object" && "full" in cert.img) {
         certData.image = cert.img.full.url;
       }
@@ -199,6 +214,7 @@ if (parsedData && parsedData.acf && !Array.isArray(parsedData.acf)) {
   <StudiesSection studies={studies} />
   <CertificatesSection certificates={certificates} />
   <ExperienceSection experiences={experiences} />
+  <TestimonialsSection />
   <TechnologiesSection />
   <ContactSection />
 </Layout>

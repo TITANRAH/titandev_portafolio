@@ -1,0 +1,192 @@
+---
+import SectionTitle from "./SectionTitle.astro";
+import type { StudyUI } from "../types";
+
+interface Props {
+  studies?: StudyUI[];
+}
+
+const { studies = [] } = Astro.props;
+
+const displayStudies = studies.length > 0 ? studies : [];
+---
+
+<section id="estudios" class="min-h-screen flex items-center justify-center bg-tech-dark">
+  <div class="container mx-auto px-6 py-20" data-aos="fade-up">
+    <SectionTitle title="Estudios" icon="book" color="tech-green" />
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+      {displayStudies.map((study: StudyUI, index: number) => (
+        <div
+          class="glass rounded-lg overflow-hidden hover:scale-105 transition-all duration-300 group"
+          data-aos="fade-up"
+          data-aos-delay={index * 100}
+        >
+          <div class="relative h-48 overflow-hidden bg-tech-black/30 flex items-center justify-center p-6">
+            <img
+              src={study.image}
+              alt={study.title}
+              class="max-w-full max-h-full object-contain group-hover:scale-110 transition-transform duration-300"
+            />
+            <div class="absolute inset-0 bg-linear-to-t from-tech-black/60 to-transparent pointer-events-none"></div>
+
+            <div class="absolute top-4 right-4 z-10">
+              {study.status === "Completado" ? (
+                <span class="px-4 py-2 bg-tech-green text-tech-black text-sm font-bold rounded-full shadow-lg shadow-tech-green/50 border-2 border-tech-green">
+                  ✓ Completado
+                </span>
+              ) : (
+                <span class="px-4 py-2 bg-tech-cyan text-tech-black text-sm font-bold rounded-full shadow-lg shadow-tech-cyan/50 border-2 border-tech-cyan">
+                  ⏳ En curso
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* Contenido */}
+          <div class="p-6">
+            <h3 class="text-2xl font-bold text-tech-cyan mb-3 group-hover:text-tech-green transition-colors">
+              {study.title}
+            </h3>
+
+            <div class="space-y-2 mb-4">
+              <div class="flex items-center gap-2 text-gray-300">
+                <svg class="w-5 h-5 text-tech-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                </svg>
+                <span class="text-sm">{study.institution}</span>
+              </div>
+
+              <div class="flex items-center gap-2 text-gray-400">
+                <svg class="w-5 h-5 text-tech-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+                <span class="text-sm">{study.period}</span>
+              </div>
+            </div>
+
+            {study.description && (
+              <p class="text-gray-400 text-sm mb-4 leading-relaxed">
+                {study.description}
+              </p>
+            )}
+
+            {study.certificateUrl && (
+              <button
+                class="inline-flex items-center gap-2 px-4 cursor-pointer  py-2 bg-linear-to-r from-tech-cyan to-tech-green text-tech-black font-semibold rounded-lg hover:scale-105 transition-transform duration-300 text-sm certificate-btn"
+                data-certificate={study.certificateUrl}
+                data-title={study.title}
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+                Ver Certificado
+              </button>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <div id="certificate-modal" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 hidden items-center justify-center p-2 md:p-4">
+    <div
+      class="relative max-w-7xl w-full h-[95vh] bg-tech-dark border-2 border-tech-cyan rounded-lg overflow-hidden flex flex-col"
+      data-aos="zoom-in"
+      data-aos-duration="500"
+    >
+      <div class="flex items-center justify-between p-3 md:p-4 bg-tech-black/50 border-b border-tech-cyan/30 shrink-0">
+        <h3 id="modal-title" class="text-lg md:text-xl font-bold text-tech-cyan truncate mr-4"></h3>
+        <div class="flex items-center gap-2">
+          <button
+            id="download-certificate"
+            class="px-4 py-2 bg-tech-green text-tech-black font-semibold rounded-lg hover:scale-105 transition-transform duration-300 flex items-center gap-2"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+            </svg>
+            <span class="hidden sm:inline">Descargar</span>
+          </button>
+
+          <button
+            id="close-modal"
+            class="w-10 h-10 flex items-center justify-center rounded-full border-2 border-tech-cyan text-tech-cyan hover:bg-tech-cyan hover:text-tech-black transition-all duration-300 shrink-0"
+          >
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="relative w-full flex-1 min-h-0 flex items-center justify-center bg-gray-900">
+        <iframe
+          id="certificate-iframe"
+          class="w-full h-full border-0"
+        ></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('certificate-modal');
+    const iframe = document.getElementById('certificate-iframe') as HTMLIFrameElement;
+    const modalTitle = document.getElementById('modal-title');
+    const closeBtn = document.getElementById('close-modal');
+    const downloadBtn = document.getElementById('download-certificate') as HTMLButtonElement;
+    const certificateBtns = document.querySelectorAll('.certificate-btn');
+
+    let currentCertificateUrl = '';
+
+    certificateBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const certificateUrl = btn.getAttribute('data-certificate');
+        const title = btn.getAttribute('data-title');
+
+        if (certificateUrl && modalTitle && modal && iframe) {
+          currentCertificateUrl = certificateUrl;
+          iframe.src = certificateUrl;
+          modalTitle.textContent = title || 'Certificado';
+          modal.classList.remove('hidden');
+          modal.classList.add('flex');
+          document.body.style.overflow = 'hidden';
+        }
+      });
+    });
+
+    downloadBtn?.addEventListener('click', async () => {
+      if (!currentCertificateUrl) return;
+
+      try {
+        window.open(currentCertificateUrl, '_blank');
+      } catch (error) {
+        console.error('Error al descargar:', error);
+      }
+    });
+
+    const closeModal = () => {
+      if (modal && iframe) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        iframe.src = '';
+        document.body.style.overflow = 'auto';
+      }
+    };
+
+    closeBtn?.addEventListener('click', closeModal);
+
+    modal?.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+        closeModal();
+      }
+    });
+  });
+</script>

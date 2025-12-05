@@ -13,6 +13,9 @@
     "@tailwindcss/vite": "^4.1.17",
     "aos": "^2.3.4",
     "astro": "^5.15.7",
+    "notyf": "^3.10.0",
+    "photoswipe": "^5.4.4",
+    "tailwindcss": "^4.1.17",
     "zod": "^3.25.76"
   }
 }
