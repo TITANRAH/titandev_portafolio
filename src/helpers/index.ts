@@ -1,4 +1,3 @@
-// Helper para formatear fechas
 export function formatDate(dateString: string): string {
   const date = new Date(dateString);
   return new Intl.DateTimeFormat('es-ES', {
@@ -8,7 +7,6 @@ export function formatDate(dateString: string): string {
   }).format(date);
 }
 
-// Helper para formatear fechas cortas (Mes Año)
 export function formatDateShort(dateString: string): string {
   const date = new Date(dateString);
   return new Intl.DateTimeFormat('es-ES', {
