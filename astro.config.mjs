@@ -16,6 +16,6 @@ export default defineConfig({
     plugins: [tailwindcss()],
   },
   image: {
-    domains: ['titandevback.local'],
+    domains: ['titandevback.cl', 'credly.com'],
   },
 });

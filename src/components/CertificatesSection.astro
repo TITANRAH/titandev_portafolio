@@ -12,130 +12,184 @@ const { certificates = [] } = Astro.props;
 const displayCertificates = certificates.length > 0 ? certificates : [];
 ---
 
-<section id="certificados" class="min-h-screen flex items-center justify-center bg-tech-black relative overflow-hidden">
+<section
+  id="certificados"
+  class="min-h-screen flex items-center justify-center bg-tech-black relative overflow-hidden"
+>
   <div class="absolute inset-0 opacity-10">
-    <div class="absolute inset-0" style="background-image: linear-gradient(rgba(0, 212, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 212, 255, 0.1) 1px, transparent 1px); background-size: 50px 50px;"></div>
+    <div
+      class="absolute inset-0"
+      style="background-image: linear-gradient(rgba(0, 212, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 212, 255, 0.1) 1px, transparent 1px); background-size: 50px 50px;"
+    >
+    </div>
   </div>
 
   <div class="container mx-auto px-6 py-20 relative z-10" data-aos="fade-up">
     <SectionTitle title="Certificaciones" icon="award" color="tech-cyan" />
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 max-w-7xl mx-auto mt-16">
-      {displayCertificates.map((cert: CertificateUI, index: number) => (
-        <div
-          class="certificate-card group relative"
-          data-aos="flip-left"
-          data-aos-delay={index * 50}
-          data-certificate-img={cert.image}
-          data-certificate-name={cert.name}
-        >
-          <div class="relative aspect-square rounded-lg overflow-hidden border-2 border-tech-cyan/30 hover:border-tech-cyan transition-all duration-300 bg-tech-dark/50 backdrop-blur-sm cursor-pointer">
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 max-w-7xl mx-auto mt-16"
+    >
+      {
+        displayCertificates.map((cert: CertificateUI, index: number) => (
+          <div
+            class="certificate-card group relative"
+            data-aos="flip-left"
+            data-aos-delay={index * 50}
+            data-certificate-img={cert.image}
+            data-certificate-name={cert.name}
+          >
+            <div class="relative aspect-square rounded-lg overflow-hidden border-2 border-tech-cyan/30 hover:border-tech-cyan transition-all duration-300 bg-tech-dark/50 backdrop-blur-sm cursor-pointer">
+              {cert.image && (
+                <div class="w-full h-full p-4 flex items-center justify-center">
+                  <Picture
+                    src={cert.image}
+                    alt={cert.name}
+                    width={300}
+                    height={300}
+                    formats={["avif", "webp"]}
+                    class="w-full h-full object-contain transform group-hover:scale-110 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                </div>
+              )}
 
-            {cert.image && (
-              <div class="w-full h-full p-4 flex items-center justify-center">
-                <Picture
-                  src={cert.image}
-                  alt={cert.name}
-                  width={300}
-                  height={300}
-                  formats={["avif", "webp"]}
-                  class="w-full h-full object-contain transform group-hover:scale-110 transition-transform duration-500"
-                  loading="lazy"
-                />
+              <div class="absolute inset-0 bg-tech-black/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <div class="text-center">
+                  <svg
+                    class="w-12 h-12 text-tech-cyan mx-auto mb-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+                    />
+                  </svg>
+                  <p class="text-tech-cyan font-semibold text-sm">
+                    Ver certificado
+                  </p>
+                </div>
               </div>
-            )}
 
-            <div class="absolute inset-0 bg-tech-black/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-              <div class="text-center">
-                <svg class="w-12 h-12 text-tech-cyan mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path>
-                </svg>
-                <p class="text-tech-cyan font-semibold text-sm">Ver certificado</p>
-              </div>
+              <div class="absolute inset-0 bg-tech-cyan/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10" />
             </div>
 
-            <div class="absolute inset-0 bg-tech-cyan/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10"></div>
+            <div class="mt-3 text-center">
+              <h3 class="text-sm lg:text-base font-semibold text-tech-white group-hover:text-tech-cyan transition-colors">
+                {cert.name}
+              </h3>
+            </div>
           </div>
-
-          <div class="mt-3 text-center">
-            <h3 class="text-sm lg:text-base font-semibold text-tech-white group-hover:text-tech-cyan transition-colors">
-              {cert.name}
-            </h3>
-          </div>
-        </div>
-      ))}
+        ))
+      }
     </div>
 
-    {displayCertificates.length === 0 && (
-      <p class="text-gray-400 text-center mt-8">No hay certificados disponibles.</p>
-    )}
+    {
+      displayCertificates.length === 0 && (
+        <p class="text-gray-400 text-center mt-8">
+          No hay certificados disponibles.
+        </p>
+      )
+    }
   </div>
 
-  <div id="cert-lightbox" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 hidden items-center justify-center p-4" style="cursor: zoom-out;">
+  <div
+    id="cert-lightbox"
+    class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 hidden items-center justify-center p-4"
+    style="cursor: zoom-out;"
+  >
     <button
       id="close-lightbox"
       class="absolute top-4 right-4 w-12 h-12 flex items-center justify-center rounded-full border-2 border-tech-cyan text-tech-cyan hover:bg-tech-cyan hover:text-tech-black transition-all duration-300 z-10"
       aria-label="Cerrar"
     >
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+      <svg
+        class="w-6 h-6"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M6 18L18 6M6 6l12 12"></path>
       </svg>
     </button>
 
     <div class="max-w-6xl w-full" data-aos="zoom-in" data-aos-duration="300">
-      <h3 id="lightbox-title" class="text-2xl font-bold text-tech-cyan mb-4 text-center"></h3>
+      <h3
+        id="lightbox-title"
+        class="text-2xl font-bold text-tech-cyan mb-4 text-center"
+      >
+      </h3>
       <div class="bg-white rounded-lg p-4 shadow-2xl">
-        <img id="lightbox-img" src="" alt="" class="w-full h-auto max-h-[80vh] object-contain" />
+        <img
+          id="lightbox-img"
+          src=""
+          alt=""
+          class="w-full h-auto max-h-[80vh] object-contain"
+        />
       </div>
     </div>
   </div>
 </section>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const lightbox = document.getElementById('cert-lightbox');
-    const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
-    const lightboxTitle = document.getElementById('lightbox-title');
-    const closeBtn = document.getElementById('close-lightbox');
-    const certificateCards = document.querySelectorAll('.certificate-card');
+  document.addEventListener("DOMContentLoaded", () => {
+    const lightbox = document.getElementById("cert-lightbox");
+    const lightboxImg = document.getElementById(
+      "lightbox-img"
+    ) as HTMLImageElement;
+    const lightboxTitle = document.getElementById("lightbox-title");
+    const closeBtn = document.getElementById("close-lightbox");
+    const certificateCards = document.querySelectorAll(".certificate-card");
 
-    certificateCards.forEach(card => {
-      card.addEventListener('click', () => {
-        const img = card.getAttribute('data-certificate-img');
-        const name = card.getAttribute('data-certificate-name');
+    certificateCards.forEach((card) => {
+      card.addEventListener("click", () => {
+        const img = card.getAttribute("data-certificate-img");
+        const name = card.getAttribute("data-certificate-name");
 
         if (img && lightbox && lightboxImg && lightboxTitle) {
           lightboxImg.src = img;
-          lightboxImg.alt = name || '';
-          lightboxTitle.textContent = name || '';
-          lightbox.classList.remove('hidden');
-          lightbox.classList.add('flex');
-          document.body.style.overflow = 'hidden';
+          lightboxImg.alt = name || "";
+          lightboxTitle.textContent = name || "";
+          lightbox.classList.remove("hidden");
+          lightbox.classList.add("flex");
+          document.body.style.overflow = "hidden";
         }
       });
     });
 
     const closeLightbox = () => {
       if (lightbox) {
-        lightbox.classList.add('hidden');
-        lightbox.classList.remove('flex');
-        document.body.style.overflow = 'auto';
+        lightbox.classList.add("hidden");
+        lightbox.classList.remove("flex");
+        document.body.style.overflow = "auto";
       }
     };
 
-    closeBtn?.addEventListener('click', (e) => {
+    closeBtn?.addEventListener("click", (e) => {
       e.stopPropagation();
       closeLightbox();
     });
 
-    lightbox?.addEventListener('click', (e) => {
+    lightbox?.addEventListener("click", (e) => {
       if (e.target === lightbox) {
         closeLightbox();
       }
     });
 
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && lightbox && !lightbox.classList.contains('hidden')) {
+    document.addEventListener("keydown", (e) => {
+      if (
+        e.key === "Escape" &&
+        lightbox &&
+        !lightbox.classList.contains("hidden")
+      ) {
         closeLightbox();
       }
     });
@@ -148,10 +202,15 @@ const displayCertificates = certificates.length > 0 ? certificates : [];
   }
 
   .certificate-card::before {
-    content: '';
+    content: "";
     position: absolute;
     inset: -2px;
-    background: linear-gradient(45deg, var(--color-tech-cyan), var(--color-tech-green), var(--color-tech-purple));
+    background: linear-gradient(
+      45deg,
+      var(--color-tech-cyan),
+      var(--color-tech-green),
+      var(--color-tech-purple)
+    );
     opacity: 0;
     z-index: -1;
     border-radius: 0.5rem;

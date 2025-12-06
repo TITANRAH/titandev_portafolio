@@ -1,6 +1,11 @@
 ---
 import { Picture } from "astro:assets";
-import { SOCIAL_LINKS } from "../constants";
+import {
+  GOOGLE_CLOUD_DIGITAL_LEADER_CERTIFICATION_IMAGE_HEIGHT,
+  GOOGLE_CLOUD_DIGITAL_LEADER_CERTIFICATION_IMAGE_URL,
+  GOOGLE_CLOUD_DIGITAL_LEADER_CERTIFICATION_IMAGE_WIDTH,
+  SOCIAL_LINKS,
+} from "../constants";
 import cvPdf from "../assets/CV-Sergio-Miranda-2026.docx.pdf";
 
 interface Props {
@@ -204,16 +209,16 @@ const { title, subtitle, description, imageUrl, imageWidth, imageHeight } =
                 class="relative bg-tech-dark/90 backdrop-blur-sm border-2 border-tech-green rounded-lg p-2 shadow-2xl hover:scale-110 transition-transform duration-300 cursor-pointer"
               >
                 <Picture
-                  src="http://titandevback.local/wp-content/uploads/2025/12/cloud-digital-leader-certification-espanol.png"
+                  src={GOOGLE_CLOUD_DIGITAL_LEADER_CERTIFICATION_IMAGE_URL}
                   alt="Google Cloud Digital Leader Certification"
-                  width={120}
-                  height={120}
+                  width={GOOGLE_CLOUD_DIGITAL_LEADER_CERTIFICATION_IMAGE_WIDTH}
+                  height={GOOGLE_CLOUD_DIGITAL_LEADER_CERTIFICATION_IMAGE_HEIGHT}
                   formats={["avif", "webp"]}
                   class="w-20 h-20 lg:w-28 lg:h-28 object-contain"
                   loading="lazy"
                 />
                 <div
-                  class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-0 group-hover/badge:opacity-100 transition-opacity duration-300"
+                  class="absolute inset-0 bg-linear-to-tr from-transparent via-white/10 to-transparent opacity-0 group-hover/badge:opacity-100 transition-opacity duration-300"
                 >
                 </div>
               </div>

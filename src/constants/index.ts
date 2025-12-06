@@ -8,6 +8,10 @@ export const SOCIAL_LINKS = {
   twitter: "",
 };
 
+export const GOOGLE_CLOUD_DIGITAL_LEADER_CERTIFICATION_IMAGE_URL = "http://titandevback.cl/wp-content/uploads/2025/12/cloud-digital-leader-certification-espanol.png";
+export const GOOGLE_CLOUD_DIGITAL_LEADER_CERTIFICATION_IMAGE_WIDTH = 120;
+export const GOOGLE_CLOUD_DIGITAL_LEADER_CERTIFICATION_IMAGE_HEIGHT = 120;
+
 export const NAV_ITEMS = [
   { label: "Home", href: "#home" },
   { label: "Estudios", href: "#estudios" },
