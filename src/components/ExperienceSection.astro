@@ -21,7 +21,7 @@ const displayExperiences = experiences.length > 0 ? experiences : [];
     <SectionTitle title="Experiencia Laboral" icon="document" color="tech-purple" />
 
     <div class="max-w-5xl mx-auto mt-16 relative">
-      <div class="hidden md:block absolute left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-tech-purple via-tech-cyan to-tech-purple transform -translate-x-1/2"></div>
+      <div class="hidden md:block absolute left-1/2 top-0 bottom-0 w-0.5 bg-linear-to-b from-tech-purple via-tech-cyan to-tech-purple transform -translate-x-1/2"></div>
 
       <div class="space-y-12">
         {displayExperiences.map((exp: ExperienceUI, index: number) => (
@@ -75,7 +75,7 @@ const displayExperiences = experiences.length > 0 ? experiences : [];
                   </div>
                 </div>
 
-                <div class="h-1 bg-gradient-to-r from-transparent via-tech-purple to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div class="h-1 bg-linear-to-r from-transparent via-tech-purple to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
             </div>
           </div>

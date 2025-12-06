@@ -27,6 +27,8 @@ export const CACHE_CONFIG = {
   long: "public, s-maxage=300, stale-while-revalidate=600",
 };
 
+export const GOOGLE_CLOUD_DIGITAL_LEADER_CERTIFICATION_URL = "https://www.credly.com/badges/a00dfe30-e539-445f-ae80-e1262c8e5187/public_url";
+
 export const SKILL_LEVELS = {
   advanced: { label: "Avanzado", percentage: 90, color: "tech-cyan" },
   advanced_high: { label: "Avanzado", percentage: 85, color: "tech-cyan" },
