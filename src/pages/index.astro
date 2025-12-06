@@ -12,7 +12,7 @@ import { CACHE_CONFIG } from "../constants";
 Astro.response.headers.set("Cache-Control", CACHE_CONFIG.short);
 
 let parsedData: HomePage | null = null;
-let title = "";
+let title = "TitanDev - Portfolio";
 
 try {
   const url = `${import.meta.env.API_URL}/pages?slug=inicio`;
@@ -26,7 +26,9 @@ try {
 
     if (json && json.length > 0) {
       parsedData = HomePageSchema.parse(json[0]);
-      title = parsedData.title.rendered;
+      if (parsedData?.title?.rendered) {
+        title = parsedData.title.rendered;
+      }
     }
   }
 } catch (error) {
@@ -168,7 +170,7 @@ if (experiencesData && experiencesData.length > 0) {
   experiences = experiencesData.map((exp: any, index: number) => {
     const expData: any = {
       id: exp.id,
-      company: exp.title.rendered,
+      company: exp.title?.rendered || exp.title || "Sin nombre",
       description:
         exp.acf?.description ||
         exp.content?.rendered?.replace(/<[^>]*>/g, "") ||
